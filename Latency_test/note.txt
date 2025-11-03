@@ -1,0 +1,12 @@
+#DPDK build command
+g++ -O3 -std=c++17 dpdk_sink.cpp -o dpdk_sink   $(pkg-config --cflags --libs libdpdk)
+
+#dpdk_sink running command
+sudo chrt -f 99 taskset -c 1 ./dpdk_sink -l 1 -n 4 --   --port-id 0 --arp-ip 172.30.53.191   --ip 172.30.53.191 --udp 9000   --payload-size 64 --burst 128 --mbufs 524288 --rx-desc 1024
+
+#kernel build command
+g++ -O3 -march=native -std=c++17 kernel_udp_sink.cpp -o kernel_udp_sink
+
+#kernel running command
+sudo chrt -f 99 taskset -c 1 ./kernel_udp_sink   --ip 172.30.53.191 --port 9000   --iface ens6   --busy-poll 50 --busy-budget 64   --batch 256 --rcvbuf 64 --payload-hint 64   | tee kernel_sink.out
+
