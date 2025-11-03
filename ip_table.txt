@@ -1,0 +1,2 @@
+ens6 DPDK card 172.30.53.191/16
+ens5 SSH card 172.30.165.99
